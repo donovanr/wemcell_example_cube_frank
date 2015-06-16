@@ -1,0 +1,6 @@
+DEFINE_REACTIONS
+{
+  vol1' + surf1' <-> surf1b' [>1e+8, <1000]
+  vol1' + surf2' <-> surf2b' [>1e+8, <1000]
+}
+

@@ -1,0 +1,10 @@
+REACTION_DATA_OUTPUT
+{
+  STEP=record_freq
+  {COUNT[surf1,WORLD]}=> "./react_data/surf1.World.dat"
+  {COUNT[surf1b,WORLD]}=> "./react_data/surf1b.World.dat"
+  {COUNT[surf2,WORLD]}=> "./react_data/surf2.World.dat"
+  {COUNT[surf2b,WORLD]}=> "./react_data/surf2b.World.dat"
+  {COUNT[vol1,WORLD]}=> "./react_data/vol1.World.dat"
+}
+

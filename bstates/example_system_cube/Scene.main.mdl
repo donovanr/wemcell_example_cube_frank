@@ -1,0 +1,38 @@
+INCLUDE_FILE = "Scene.WE.mdl"
+
+ITERATIONS = iterations
+TIME_STEP = timestep
+
+INCLUDE_FILE = "Scene.initialization.mdl"
+
+INCLUDE_FILE = "Scene.molecules.mdl"
+
+INCLUDE_FILE = "Scene.reactions.mdl"
+
+INCLUDE_FILE = "Scene.geometry.mdl"
+
+
+
+INSTANTIATE Scene OBJECT
+{
+  Cube OBJECT Cube {}
+  surf1b_rel RELEASE_SITE
+  {
+   SHAPE = Scene.Cube[top]
+   MOLECULE = surf1b,
+   NUMBER_TO_RELEASE = 1000
+   RELEASE_PROBABILITY = 1
+  }
+  surf2_rel RELEASE_SITE
+  {
+   SHAPE = Scene.Cube[bottom]
+   MOLECULE = surf2,
+   NUMBER_TO_RELEASE = 1000
+   RELEASE_PROBABILITY = 1
+  }
+}
+
+sprintf(seed,"%05g",SEED)
+
+INCLUDE_FILE = "Scene.rxn_output.mdl"
+
