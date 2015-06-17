@@ -57,7 +57,8 @@ https://github.com/westpa/westpa
    - `./init.sh`
 - run the WE simulation
    - `./run.sh`
-- with the default setting, it should take 5--10 minutes to run the simulation.
+- with the default settings, it should take 5-10 minutes to run the simulation.
+
 ## Plot output
 
 I've included a very basic tool to plot the results of the simulation using only a terminal.
