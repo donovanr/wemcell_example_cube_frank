@@ -1,16 +1,28 @@
 /* IMPORTANT: iterations/chkpt_stride should be >= the number of WE iterations! */
 
-/* you should only have to change sim_length and we_iters */
 
-timestep = 1e-5             /* internal timestep for mcell */
-chkpt_stride = 1e2          /* how many internal time steps per WE iteration? */
-we_iters = 10              /* number of WE iters -- should match number in west.cfg */
+/* internal timestep for mcell */
+timestep = 1e-5
 
-iterations = we_iters*chkpt_stride             /* number of mcell iterations of size timestep in entire simulation  */
 
-substeps = 10                                  /* how many times to record counts per WE iter -- affects pcoord length in system.py */
-record_freq = timestep*chkpt_stride/substeps   /* reinterprets substeps to get read by Scene.rxn_output.mdl */
+/* how many internal time steps per WE iteration? */
+chkpt_stride = 1e2
+
+/* number of WE iters -- should match number in west.cfg */
+we_iters = 10
+
+/* number of mcell iterations of size timestep in entire simulation */
+iterations = we_iters*chkpt_stride
+
+
+/* how many times to record counts per WE iter -- affects pcoord length in system.py */
+substeps = 10
+
+/* reinterprets substeps to get read by Scene.rxn_output.mdl */
+record_freq = timestep*chkpt_stride/substeps 
+
 
 /* checkpoint args that mcell needs */
 CHECKPOINT_OUTFILE = "chkpt"
 CHECKPOINT_ITERATIONS = chkpt_stride
+

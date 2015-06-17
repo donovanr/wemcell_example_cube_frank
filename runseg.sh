@@ -13,17 +13,20 @@ WORKDIR=$WEST_CURRENT_SEG_DATA_REF
 mkdir -pv $WORKDIR || exit 1
 cd $WORKDIR
 
+
 # MCell run ####################################################################
 
-# load MCELL, MODEL_NAME, and OBSERVABLE1, defined in init.sh
-. "$WEST_SIM_ROOT/bstates/variables.sh" || exit 1
-wait
+# set variables for mcell run and progress coordinate extraciton
 
-# Set up the run -- make links to all the files needed for the segment
+export MCELL=$(which mcell) # which version of mcell are we using
+export MODEL_NAME=example_system_cube # the name of the directory all the model files live in
+export OBSERVABLE1=surf2b.World # observable we are using as our (1st) progress coordinate
+
+# set up the run -- make links to all the files needed for the segment
 ln -s ${WEST_SIM_ROOT}/istates/${MODEL_NAME} ${MODEL_NAME}
 wait
 
-# if we're continueing the trajectory, restart from the checpoint file of the parent traj
+# if we're continueing the trajectory, restart from the checkpoint file of the parent traj
 
 if [ $WEST_CURRENT_ITER -gt 1 ]; then
   CHKPT_FLAG="-checkpoint_infile $WEST_PARENT_DATA_REF/chkpt"

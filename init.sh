@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# MCell environment/simulation setup ###########################################
-
-# which version of mcell are we using
-export MCELL=$(which mcell)
-
-# the name of the model, as in <model_name>.mdl
-export MODEL_NAME=example_system_cube
-
-# observable
-export OBSERVABLE1=surf2b.World
-
-
-# Standard WEST stuff ##########################################################
-
 source env.sh
 ps aux | grep w_run | grep -v grep
 pkill -9 -f w_run
@@ -41,23 +27,6 @@ mkdir seg_logs traj_segs
 rm -f recycled_weight.txt
 rm -f pcoord_check.txt
 
-# MCell initialization #########################################################
-
-cd bstates
-
-# Make a file to keep all these variables in
-rm -f variables.sh
-echo '#!/bin/bash' >> variables.sh || exit 1
-chmod +x variables.sh
-
-
-# save variables to file so runseg.sh can read them
-echo "MCELL=$MCELL" >> variables.sh || exit 1
-echo "MODEL_NAME=$MODEL_NAME" >> variables.sh || exit 1
-echo "OBSERVABLE1=$OBSERVABLE1" >> variables.sh || exit 1
-
-
-# finish the west initialization ###############################################
 
 cd $WEST_SIM_ROOT
 SIM_FILES=$(eval ls bstates)

@@ -12,7 +12,7 @@ https://github.com/westpa/westpa
    - `bash Anaconda-2.2.0-Linux-x86_64.sh`
 - add anaconda to path in ~/.bashrc, if you didn't let the script do it for you:
    - `export PATH="${HOME}/anaconda/bin:$PATH"`
-   - source ~/.bashrc
+   - `source ~/.bashrc`
 - make sure anaconda is up to date
    - `conda update conda`
    - `conda update anaconda`
@@ -57,3 +57,40 @@ https://github.com/westpa/westpa
    - `./init.sh`
 - run the WE simulation
    - `./run.sh`
+
+## Change simulation parameters
+
+Most of the MCell parameters can be changed in `bstates/example_system_cube/Scene.WE.mdl`. 
+Most of the WESTPA parameters can be changed in `system.py` and `west.cfg`.
+
+### Extra parametrs specific to MCell
+
+There are three parameters in `runseg.sh` that need to be set for MCell to properly run.
+They are:
+- `MCELL`
+   - the version of mcell we using
+- `MODEL_NAME`
+   - the name of the directory all the model files live in 
+- `OBSERVABLE1`
+   - observable we are using as our (1st) progress coordinate
+
+Note that there are plenty of other parameters internal to MCell that can be set, these are just the extra ones needed for MCell and WESTPA to properly continue trajectories.
+
+### Parameters that need to get changed in two places
+
+Changing some simulation parameters can be a little fussy, since you have to set the new value in two places.
+This is becasue both MCell and WESTPA independently need to know, e.g. how many iterations to run.
+
+The variables that need to be changed in two places are listed below:
+
+- number of weighted ensemble iteratioins to run. the following parameters should be the same:
+   - `we_iters` in `bstates/example_system_cube/Scene.WE.mdl`
+   - `west:propogation:max_total_iterations` in `west.cfg`
+
+- number of times per weighted ensemble iteration to record data. substeps should be one less than `pcoord_len`.
+   - `substeps` in `bstates/example_system_cube/Scene.WE.mdl`
+   - `self.pcoord_len` in `system.py`
+
+### WESTPA parameters
+
+As usual, if you want to change the bins, and number of trajectories per bin, you can edit these settings in syste.py.
