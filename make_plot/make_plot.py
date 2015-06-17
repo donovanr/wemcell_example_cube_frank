@@ -2,7 +2,7 @@
 
 '''
 This script reads in an hdf5 file from a westpa simulation and produces a 
-plot of the probability distribution for a desired iteration.
+plot of the probability distribution for a desired iteration using gnuplot.
 
 Written by Rory Donovan
 '''
@@ -19,7 +19,7 @@ args = parser.parse_args()
 import h5py
 import numpy
 import os
-
+import subprocess
 
 # read input args to variables
 f = h5py.File(args.file, "r")
@@ -43,18 +43,11 @@ weights = numpy.array(weights,dtype='float32')
 # make sure they have the same length
 assert len(weights) == len(final_pcoord), "length mismatch"
 
-# put pcoords and weights into one two-column array
-iterinfo = numpy.column_stack((final_pcoord,weights))
-
-
-
 # make a histogram of the pcoord and weights from the desired iteration
-hist,bin_edges = numpy.histogram(iterinfo[:,0],weights=iterinfo[:,1],bins=[i for i in xrange(-1,int(max(final_pcoord))+1)])
+hist,bin_edges = numpy.histogram(final_pcoord,weights=weights,bins=[i for i in xrange(-1,int(max(final_pcoord))+1)])
 int_bins = bin_edges[1:]
 
 # pass the histogram to gnuplot's ascii plot engine
-import subprocess
-
 gnuplot = subprocess.Popen(['/usr/bin/gnuplot'], stdin=subprocess.PIPE)
 gnuplot.stdin.write('set term dumb 79 25\n')
 
@@ -63,7 +56,7 @@ gnuplot.stdin.write('set logscale y \n')
 # change plot ranges by hand for now
 gnuplot.stdin.write('set xrange [0:30] \n')
 gnuplot.stdin.write('set yrange [0.0001:1.0] \n')
-
+gnuplot.stdin.write('set title "WE iteration {0}" \n'.format(iternum))
 gnuplot.stdin.write('set ylabel "Probability" \n')
 gnuplot.stdin.write('set xlabel "Bound receptors on bottom of cube" \n')
 
