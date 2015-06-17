@@ -91,7 +91,7 @@ They are:
 
 Note that there are plenty of other parameters internal to MCell that can be set, these are just the extra ones needed for MCell and WESTPA to properly continue trajectories.
 
-### Parameters that need to get changed in two places
+### Parameters that need to be changed in two places
 
 Changing some simulation parameters can be a little fussy, since you have to set the new value in two places.
 This is becasue both MCell and WESTPA independently need to know, e.g. how many iterations to run.
@@ -102,7 +102,7 @@ The variables that need to be changed in two places are listed below:
    - `we_iters` in `bstates/example_system_cube/Scene.WE.mdl`
    - `west:propogation:max_total_iterations` in `west.cfg`
 
-- number of times per weighted ensemble iteration to record data. substeps should be one less than `pcoord_len`.
+- number of times per weighted ensemble iteration to record data. `substeps` should be one less than `pcoord_len`.
    - `substeps` in `bstates/example_system_cube/Scene.WE.mdl`
    - `self.pcoord_len` in `system.py`
 
