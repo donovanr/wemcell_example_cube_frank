@@ -93,4 +93,4 @@ The variables that need to be changed in two places are listed below:
 
 ### WESTPA parameters
 
-As usual, if you want to change the bins, and number of trajectories per bin, you can edit these settings in syste.py.
+As usual, if you want to change the bins, and number of trajectories per bin, you can edit these settings in `system.py`.
