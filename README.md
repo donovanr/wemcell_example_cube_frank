@@ -58,6 +58,20 @@ https://github.com/westpa/westpa
 - run the WE simulation
    - `./run.sh`
 
+## Plot output
+
+I've included a very basic tool to plot the results of the simulation using only a terminal.
+
+Once the simulation is done running,
+- `cd ascii_plots`
+
+If you would like to look at the probability distribution of the progress coordinate (i.e bound receptors on the bottom of the cube) at a given iteration (say, iteration 10):
+- `./ascii_plot.py --iter 10 --file ../west.h5`
+
+If you would like to see that probability distribution evolve in time:
+- `./ascii_movie.sh`
+
+
 ## Change simulation parameters
 
 Most of the MCell parameters can be changed in `bstates/example_system_cube/Scene.WE.mdl`. 
