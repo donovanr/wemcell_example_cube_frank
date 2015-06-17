@@ -54,13 +54,14 @@ gnuplot.stdin.write('set term dumb 79 25\n')
 gnuplot.stdin.write('set logscale y \n')
 
 # change plot ranges by hand for now
-gnuplot.stdin.write('set xrange [0:30] \n')
-gnuplot.stdin.write('set yrange [0.0001:1.0] \n')
+gnuplot.stdin.write('set xrange [0:50] \n')
+gnuplot.stdin.write('set yrange [0.000001:1.0] \n')
 gnuplot.stdin.write('set title "WE iteration {0}" \n'.format(iternum))
 gnuplot.stdin.write('set ylabel "Probability" \n')
 gnuplot.stdin.write('set xlabel "Bound receptors on bottom of cube" \n')
 
-gnuplot.stdin.write('plot "-" using 1:2 title "Weighted Ensemble pdf" with linespoints \n')
+#gnuplot.stdin.write('plot "-" using 1:2 title "Weighted Ensemble pdf" with linespoints \n')
+gnuplot.stdin.write('plot "-" using 1:2 title "Weighted Ensemble pdf" with points \n')
 
 for i,j in zip(int_bins,hist):
     gnuplot.stdin.write('%f %f\n' % (i,j))
