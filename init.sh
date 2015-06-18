@@ -14,7 +14,6 @@ mkdir seg_logs traj_segs istates
 
 echo "running on node: $HOSTNAME" || exit 1
 echo "shell is $SHELL" || exit 1
-echo "model is $MODEL_NAME" || exit 1
 
 export WEST_SIM_ROOT="$PWD"
 

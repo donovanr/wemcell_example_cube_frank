@@ -24,48 +24,84 @@ import subprocess
 # read input args to variables
 f = h5py.File(args.file, "r")
 basename = os.path.splitext(args.file)[0]
-iternum = int(args.iter)
+thisiter = int(args.iter)
 
-# construct paths to iter info in the h5 file
-segindex_path = '/iterations/iter_' + '{0:08d}'.format(iternum) + '/seg_index'
-pcoord_path = '/iterations/iter_' + '{0:08d}'.format(iternum) + '/pcoord'
+def get_pcoords_and_weights(iternum):
 
-# get the vector of final pcoords
-final_pcoord = f[pcoord_path][:,-1]
-final_pcoord = numpy.array(final_pcoord,dtype='float32')
-final_pcoord = numpy.squeeze(numpy.asarray(final_pcoord))
+    # construct paths to iter info in the h5 file
+    segindex_path = '/iterations/iter_' + '{0:08d}'.format(iternum) + '/seg_index'
+    pcoord_path = '/iterations/iter_' + '{0:08d}'.format(iternum) + '/pcoord'
 
-# get the weights
-segindex = f[segindex_path]
-weights = [x[0] for x in segindex]
-weights = numpy.array(weights,dtype='float32')
+    # get the vector of final pcoords
+    final_pcoord = f[pcoord_path][:,-1]
+    final_pcoord = numpy.array(final_pcoord,dtype='float32')
+    final_pcoord = numpy.squeeze(numpy.asarray(final_pcoord))
 
-# make sure they have the same length
-assert len(weights) == len(final_pcoord), "length mismatch"
+    # get the weights
+    segindex = f[segindex_path]
+    weights = [x[0] for x in segindex]
+    weights = numpy.array(weights,dtype='float32')
 
-# make a histogram of the pcoord and weights from the desired iteration
-hist,bin_edges = numpy.histogram(final_pcoord,weights=weights,bins=[i for i in xrange(-1,int(max(final_pcoord))+1)])
-int_bins = bin_edges[1:]
+    # make sure they have the same length
+    assert len(weights) == len(final_pcoord), "length mismatch"
+    
+    return final_pcoord,weights
 
-# pass the histogram to gnuplot's ascii plot engine
-gnuplot = subprocess.Popen(['/usr/bin/gnuplot'], stdin=subprocess.PIPE)
-gnuplot.stdin.write('set term dumb 79 25\n')
 
-gnuplot.stdin.write('set logscale y \n')
+def make_hist(final_pcoord,weights):
+    # make a histogram of the pcoord and weights from the desired iteration
+    hist,bin_edges = numpy.histogram(final_pcoord,weights=weights,bins=[i for i in xrange(-1,int(max(final_pcoord))+1)])
+    int_bins = bin_edges[1:]
+    return hist,int_bins
 
-# change plot ranges by hand for now
-gnuplot.stdin.write('set xrange [0:50] \n')
-gnuplot.stdin.write('set yrange [0.000001:1.0] \n')
-gnuplot.stdin.write('set title "WE iteration {0}" \n'.format(iternum))
-gnuplot.stdin.write('set ylabel "Probability" \n')
-gnuplot.stdin.write('set xlabel "Bound receptors on bottom of cube" \n')
 
-#gnuplot.stdin.write('plot "-" using 1:2 title "Weighted Ensemble pdf" with linespoints \n')
-gnuplot.stdin.write('plot "-" using 1:2 title "Weighted Ensemble pdf" with points \n')
+def bf_equiv(iternum,f):
+    summary = f['/summary']
 
-for i,j in zip(int_bins,hist):
-    gnuplot.stdin.write('%f %f\n' % (i,j))
+    # tally the number of segs in each iter to make a total
+    numsegs = 0
+    for i in xrange(iternum):
+        numsegs += summary[i][0]
 
-gnuplot.stdin.write('e\n')
-gnuplot.stdin.flush()
+    return numsegs/float(iternum)
 
+
+def gnuplot_size():
+    gnuplot_rows, gnuplot_cols = os.popen('stty size', 'r').read().split()
+    gnuplot_rows = int(gnuplot_rows)
+    gnuplot_cols = int(gnuplot_cols)
+    return gnuplot_rows, gnuplot_cols
+
+
+def plot_iter(iternum):
+
+    final_pcoord,weights = get_pcoords_and_weights(thisiter)
+    hist,int_bins = make_hist(final_pcoord,weights)
+    
+    gp_rows, gp_cols = gnuplot_size()
+    
+    #bf = bf_equiv(iternum,f)
+    #print bf
+
+    # pass the histogram to gnuplot's ascii plot engine
+    gnuplot = subprocess.Popen(['gnuplot'], stdin=subprocess.PIPE)
+    gnuplot.stdin.write('set term dumb {0} {1}\n'.format(gp_cols-1,gp_rows-1))
+    
+    gnuplot.stdin.write('set logscale y \n')
+    
+    # change plot ranges by hand for now
+    gnuplot.stdin.write('set xrange [0:50] \n')
+    gnuplot.stdin.write('set yrange [0.000001:1.0] \n')
+    gnuplot.stdin.write('set title "WE iteration {0}" \n'.format(iternum))
+    gnuplot.stdin.write('set ylabel "Probability" \n')
+    gnuplot.stdin.write('set xlabel "Bound receptors on bottom of cube" \n')
+    
+    gnuplot.stdin.write('plot "-" using 1:2 title "Weighted Ensemble pdf" with points \n')
+
+    for i,j in zip(int_bins,hist):
+        gnuplot.stdin.write('%f %f\n' % (i,j))
+    
+    gnuplot.stdin.write('e\n')
+    gnuplot.stdin.flush()
+
+plot_iter(thisiter)

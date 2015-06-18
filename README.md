@@ -45,6 +45,15 @@ https://github.com/westpa/westpa
    - `ln -s mcell-3.3_x86_64 mcell`
 - which mcell should be `~/bin/mcell` and you should be able to get the mcell help screen by entering `mcell` in any directory
 
+## If you are using OS X
+
+These scripts use `sed` to edit data files inline, and the `sed` that comes with OS X is somewhat impaired in this regard.
+The easiest way to fix the problem is to install gnu-sed with [homebrew](http://brew.sh/):
+- `brew install gnu-sed`
+- `ln -s /usr/local/bin/gsed /usr/local/bin/sed`
+That last command will make it so that you use `gsed` everywhere `sed` is normally used.
+I'm not aware of any serious drawbacks to this, but if you prefer not to do so, you can instead edit `runseg.sh` and change the single invocation of `sed` to `gsed`
+
 ## Clone this repository and run the simulation
 
 - move to wherever you wan to store this project
