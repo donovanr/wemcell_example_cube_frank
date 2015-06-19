@@ -51,6 +51,7 @@ These scripts use `sed` to edit data files inline, and the `sed` that comes with
 The easiest way to fix the problem is to install gnu-sed with [homebrew](http://brew.sh/):
 - `brew install gnu-sed`
 - `ln -s /usr/local/bin/gsed /usr/local/bin/sed`
+
 That last command will make it so that you use `gsed` everywhere `sed` is normally used.
 I'm not aware of any serious drawbacks to this, but if you prefer not to do so, you can instead edit `runseg.sh` and change the single invocation of `sed` to `gsed`
 
@@ -62,6 +63,7 @@ I'm not aware of any serious drawbacks to this, but if you prefer not to do so, 
    - `cd wemcell_example_cube`
 - set the environment
    - `./env.sh`
+      - if you installed WESTPA do somewhere other than `~/westpa`, change the relevant line in `env.sh`
 - intialize the WE simulation
    - `./init.sh`
 - run the WE simulation
