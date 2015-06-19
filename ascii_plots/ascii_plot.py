@@ -55,7 +55,7 @@ def make_hist(final_pcoord,weights):
     return hist,int_bins
 
 
-def bf_equiv(iternum,f):
+def bf_limit(iternum,f):
     summary = f['/summary']
 
     # tally the number of segs in each iter to make a total
@@ -63,13 +63,13 @@ def bf_equiv(iternum,f):
     for i in xrange(iternum):
         numsegs += summary[i][0]
 
-    return numsegs/float(iternum)
+    return float(iternum)/numsegs
 
 
 def gnuplot_size():
     gnuplot_rows, gnuplot_cols = os.popen('stty size', 'r').read().split()
-    gnuplot_rows = int(gnuplot_rows)
-    gnuplot_cols = int(gnuplot_cols)
+    gnuplot_rows = int(gnuplot_rows) - 1
+    gnuplot_cols = int(gnuplot_cols) - 1
     return gnuplot_rows, gnuplot_cols
 
 
@@ -80,21 +80,25 @@ def plot_iter(iternum):
     
     gp_rows, gp_cols = gnuplot_size()
     
-    #bf = bf_equiv(iternum,f)
-    #print bf
+    bf = bf_limit(iternum,f)
+    bfpoints = [bf for i in int_bins]
 
     # pass the histogram to gnuplot's ascii plot engine
     gnuplot = subprocess.Popen(['gnuplot'], stdin=subprocess.PIPE)
-    gnuplot.stdin.write('set term dumb {0} {1}\n'.format(gp_cols-1,gp_rows-1))
+    gnuplot.stdin.write('set term dumb {0} {1}\n'.format(gp_cols,gp_rows))
     
     gnuplot.stdin.write('set logscale y \n')
     
     # change plot ranges by hand for now
-    gnuplot.stdin.write('set xrange [0:50] \n')
+    xmax = 50
+    gnuplot.stdin.write('set xrange [0:{0}] \n'.format(xmax))
     gnuplot.stdin.write('set yrange [0.000001:1.0] \n')
     gnuplot.stdin.write('set title "WE iteration {0}" \n'.format(iternum))
     gnuplot.stdin.write('set ylabel "Probability" \n')
     gnuplot.stdin.write('set xlabel "Bound receptors on bottom of cube" \n')
+    
+    gnuplot.stdin.write('set arrow from 0,{1} to {0},{1} nohead linestyle \n'.format(xmax,bf))
+    gnuplot.stdin.write('set label " Brute-force limit " at {0},{1} \n'.format(xmax*0.75,bf))
     
     gnuplot.stdin.write('plot "-" using 1:2 title "Weighted Ensemble pdf" with points \n')
 
@@ -105,3 +109,4 @@ def plot_iter(iternum):
     gnuplot.stdin.flush()
 
 plot_iter(thisiter)
+
