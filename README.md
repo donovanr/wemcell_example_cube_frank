@@ -73,7 +73,7 @@ Once the simulation is done running,
 - `cd ascii_plots`
 
 Make sure we have th appropriate version of python loaded up:
-- ./load_modules.sh
+- `./load_modules.sh`
 
 If you would like to look at the probability distribution of the progress coordinate (i.e bound receptors on the bottom of the cube) at a given iteration (say, iteration 50):
 - `./ascii_plot.py --iter 50 --file ../west.h5`
