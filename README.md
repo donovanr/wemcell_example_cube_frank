@@ -1,6 +1,6 @@
 # How to use WESTPA and MCell together
 
-This repository conatins everything you should ned to run an MCell simualtion using WESTPA on frank.
+This repository conatins everything you should need to run an MCell simualtion using WESTPA on frank.
 
 The environment variables are set specifically to work on frank.sam.pitt.edu.
 If you would like to install and run on a different (generic) system, see the instructions [here](https://github.com/donovanr/wemcell_example_cube).
@@ -8,9 +8,9 @@ If you would like to install and run on a different (generic) system, see the in
 ## Clone this repository and run the simulation
 
 - In your home directory on frank, or wherever you want to store this directory,
-   - `git clone https://github.com/donovanr/wemcell_example_cube.git`
+   - `git clone https://github.com/donovanr/wemcell_example_cube_frank.git`
 - change into the directory of the new project
-   - `cd wemcell_example_cube`
+   - `cd wemcell_example_cube_frank`
 - submit the job to the queue
    - `qsub submit_job.pbs`
 - with the default settings, it should take 10 minutes to run the simulation.
@@ -22,7 +22,7 @@ I've included a very basic tool to plot the results of the simulation using only
 Once the simulation is done running,
 - `cd ascii_plots`
 
-Make sure we have th appropriate version of python loaded up:
+Make sure we have the appropriate version of python loaded up:
 - `./load_modules.sh`
 
 If you would like to look at the probability distribution of the progress coordinate (i.e bound receptors on the bottom of the cube) at a given iteration (say, iteration 50):
@@ -34,7 +34,7 @@ If you would like to see that probability distribution evolve in time:
 
 ## Change simulation parameters
 
-Most of the MCell parameters can be changed in `bstates/example_system_cube/Scene.WE.mdl`. 
+Most of the MCell parameters can be changed in `bstates/example_system_cube_frank/Scene.WE.mdl`. 
 Most of the WESTPA parameters can be changed in `system.py` and `west.cfg`.
 
 ### Extra parameters specific to MCell
@@ -58,11 +58,11 @@ This is becasue both MCell and WESTPA independently need to know, e.g. how many 
 The variables that need to be changed in two places are listed below:
 
 - number of weighted ensemble iterations to run. The following parameters should be the same:
-   - `we_iters` in `bstates/example_system_cube/Scene.WE.mdl`
+   - `we_iters` in `bstates/example_system_cube_frank/Scene.WE.mdl`
    - `west:propogation:max_total_iterations` in `west.cfg`
 
 - number of times per weighted ensemble iteration to record data. `substeps` should be one less than `pcoord_len`.
-   - `substeps` in `bstates/example_system_cube/Scene.WE.mdl`
+   - `substeps` in `bstates/example_system_cube_frank/Scene.WE.mdl`
    - `self.pcoord_len` in `system.py`
 
 ### WESTPA parameters
