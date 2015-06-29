@@ -14,13 +14,12 @@ set -x
 
 # job execution begins in ~/, need to move back to where this file is
 cd ${PBS_O_WORKDIR}
-DIR_NAME=$(basename ${PBS_O_WORKDIR})
 
 # copy this directory to compute node's local drive
 cp -r ${PBS_O_WORKDIR} ${SCRATCH}
 
 # move there
-cd ${SCRATCH}/${DIR_NAME}
+cd ${SCRATCH}/$(basename ${PBS_O_WORKDIR})
 
 # set the environment
 source env.sh || exit 1
