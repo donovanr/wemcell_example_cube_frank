@@ -3,10 +3,10 @@ timestep = 1e-6
 
 
 /* how many internal time steps per WE iteration? */
-chkpt_stride = 1e2
+chkpt_stride = 2e2
 
 /* number of WE iters -- should match number in west.cfg */
-we_iters = 100
+we_iters = 50
 
 /* number of mcell iterations of size timestep in entire simulation */
 iterations = we_iters*chkpt_stride

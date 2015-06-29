@@ -7,5 +7,5 @@ INITIAL_ITER=$STEP_SIZE
 
 for ITER in $(seq $INITIAL_ITER $STEP_SIZE $MAX_ITER); do
 	./ascii_plot.py --iter $ITER --file ../west.h5 2>/dev/null
-	#sleep 0.1
+	sleep 0.1
 done

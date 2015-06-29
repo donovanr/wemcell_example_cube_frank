@@ -2,8 +2,13 @@
 # Modify to taste
 
 # Inform WEST where to find Python and our other scripts where to find WEST
-export WEST_PYTHON=$(which python)
-export WEST_ROOT="${HOME}/westpa"
+#export WEST_PYTHON=$(which python)
+#export WEST_ROOT="${HOME}/westpa"
+
+module purge
+module load queue
+module load westpa/1.0-gcc-4.8.2
+module load mcell
 
 # Explicitly name our simulation root directory
 if [[ -z "$WEST_SIM_ROOT" ]]; then

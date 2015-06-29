@@ -1,0 +1,39 @@
+#!/bin/bash
+#PBS -N we-mcell-test
+#PBS -S /bin/bash
+#PBS -j oe
+#PBS -l walltime=1:00:00
+#PBS -l nodes=1:ppn=32
+#PBS -q dist_amd
+#PBS -m ae
+#PBS -M donovanr@pitt.edu
+#PBS -A dzuckerman
+
+
+set -x
+
+# job execution begins in ~/, need to move back to where this file is
+cd ${PBS_O_WORKDIR}
+DIR_NAME=$(basename ${PBS_O_WORKDIR})
+
+# copy this directory to compute node's local drive
+cp -r ${PBS_O_WORKDIR} ${SCRATCH}
+
+# move there
+cd ${SCRATCH}/${DIR_NAME}
+
+# set the environment
+source env.sh || exit 1
+
+# run initialization script and wait for completion
+./init.sh
+wait
+
+# run job and wait for completion
+./run.sh
+wait
+
+# copy data and log files back to original directory
+cp west.h5 $PBS_O_WORKDIR
+cp west.log $PBS_O_WORKDIR
+
