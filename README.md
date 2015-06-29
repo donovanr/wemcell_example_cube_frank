@@ -57,18 +57,13 @@ I'm not aware of any serious drawbacks to this, but if you prefer not to do so, 
 
 ## Clone this repository and run the simulation
 
-- move to wherever you wan to store this project
+- move to wherever you want to store this project
    - `git clone https://github.com/donovanr/wemcell_example_cube.git`
 - change into the directory of the new project
    - `cd wemcell_example_cube`
-- set the environment
-   - `./env.sh`
-      - if you installed WESTPA do somewhere other than `~/westpa`, change the relevant line in `env.sh`
-- intialize the WE simulation
-   - `./init.sh`
-- run the WE simulation
-   - `./run.sh`
-- with the default settings, it should take 5-10 minutes to run the simulation.
+- submit the job to the queue
+   - `qsub submit_job.pbs`
+- with the default settings, it should take 10 minutes to run the simulation.
 
 ## Plot output
 
@@ -77,8 +72,11 @@ I've included a very basic tool to plot the results of the simulation using only
 Once the simulation is done running,
 - `cd ascii_plots`
 
-If you would like to look at the probability distribution of the progress coordinate (i.e bound receptors on the bottom of the cube) at a given iteration (say, iteration 10):
-- `./ascii_plot.py --iter 10 --file ../west.h5`
+Make sure we have th appropriate version of python loaded up:
+- ./load_modules.sh
+
+If you would like to look at the probability distribution of the progress coordinate (i.e bound receptors on the bottom of the cube) at a given iteration (say, iteration 50):
+- `./ascii_plot.py --iter 50 --file ../west.h5`
 
 If you would like to see that probability distribution evolve in time:
 - `./ascii_movie.sh`
@@ -89,12 +87,12 @@ If you would like to see that probability distribution evolve in time:
 Most of the MCell parameters can be changed in `bstates/example_system_cube/Scene.WE.mdl`. 
 Most of the WESTPA parameters can be changed in `system.py` and `west.cfg`.
 
-### Extra parametrs specific to MCell
+### Extra parameters specific to MCell
 
 There are three parameters in `runseg.sh` that need to be set for MCell to properly run.
 They are:
 - `MCELL`
-   - the version of mcell we using
+   - the version of mcell we are using
 - `MODEL_NAME`
    - the name of the directory all the model files live in 
 - `OBSERVABLE1`
@@ -109,7 +107,7 @@ This is becasue both MCell and WESTPA independently need to know, e.g. how many 
 
 The variables that need to be changed in two places are listed below:
 
-- number of weighted ensemble iteratioins to run. the following parameters should be the same:
+- number of weighted ensemble iterations to run. The following parameters should be the same:
    - `we_iters` in `bstates/example_system_cube/Scene.WE.mdl`
    - `west:propogation:max_total_iterations` in `west.cfg`
 
