@@ -9,11 +9,13 @@ If you would like to install and run on a different (generic) system, see the in
 
 - In your home directory on frank, or wherever you want to store this directory,
    - `git clone https://github.com/donovanr/wemcell_example_cube_frank.git`
-- change into the directory of the new project
+- Change into the directory of the new project
    - `cd wemcell_example_cube_frank`
-- submit the job to the queue
+- Submit the job to the queue
    - `qsub submit_job.pbs`
-- with the default settings, it should take 10 minutes to run the simulation.
+- With the default settings, it should take 10 minutes to run the simulation.
+- You can check on the job status using `qstat -u <your_username>`
+- When the simulation finishes, the files `west.log` and `west.h5` should appear in this directory.
 
 ## Plot output
 
