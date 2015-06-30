@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+source load_modules.sh
 
 MAX_ITER=$(grep max_total_iterations ../west.cfg | awk -F ': ' '{print $2}')
 STEP_SIZE=1
