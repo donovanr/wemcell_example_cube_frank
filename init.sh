@@ -34,5 +34,6 @@ cp -r bstates/* istates/
 cp -r bstates/* $WEST_SIM_ROOT
 
 BSTATE_ARGS="--bstate=well1,1,${MODEL_NAME}"
-$WEST_ROOT/bin/w_init $BSTATE_ARGS --work-manager=threads --n-workers=8 "$@"
+#$WEST_ROOT/bin/w_init $BSTATE_ARGS --work-manager=threads --n-workers=8 "$@"
+$WEST_ROOT/bin/w_init $BSTATE_ARGS --serial "$@"
 

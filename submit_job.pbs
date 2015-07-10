@@ -6,7 +6,7 @@
 #PBS -l nodes=1:ppn=32
 #PBS -q dist_amd
 #PBS -m ae
-#PBS -A dzuckerman
+#PBS -A westpa2015
 
 
 set -x
